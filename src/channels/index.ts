@@ -5,6 +5,8 @@
 
 // gmail
 
+import './feishu.js';
+
 // slack
 
 // telegram

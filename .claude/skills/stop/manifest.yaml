@@ -1,0 +1,13 @@
+skill: stop
+version: 1.0.0
+description: "Stop NanoClaw service"
+core_version: 0.1.0
+adds:
+  - scripts/stop.ts
+modifies: []
+structured:
+  npm_dependencies: {}
+env_additions: []
+conflicts: []
+depends: []
+test: "npx tsx scripts/stop.ts"

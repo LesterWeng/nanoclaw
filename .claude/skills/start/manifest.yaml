@@ -1,0 +1,13 @@
+skill: start
+version: 1.0.0
+description: "Start NanoClaw service"
+core_version: 0.1.0
+adds:
+  - scripts/start.ts
+modifies: []
+structured:
+  npm_dependencies: {}
+env_additions: []
+conflicts: []
+depends: []
+test: "npx tsx scripts/start.ts"
