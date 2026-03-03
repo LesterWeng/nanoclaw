@@ -11,11 +11,7 @@ describe('FeishuChannel', () => {
       onChatMetadata: vi.fn(),
       registeredGroups: vi.fn(() => ({})),
     };
-    channel = new FeishuChannel(
-      'test_app_id',
-      'test_app_secret',
-      mockOpts,
-    );
+    channel = new FeishuChannel('test_app_id', 'test_app_secret', mockOpts);
   });
 
   describe('name', () => {

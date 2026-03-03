@@ -31,18 +31,17 @@ export class FeishuChannel implements Channel {
 
   private opts: FeishuChannelOpts;
 
-  constructor(
-    appId: string,
-    appSecret: string,
-    opts: FeishuChannelOpts,
-  ) {
+  constructor(appId: string, appSecret: string, opts: FeishuChannelOpts) {
     this.appId = appId;
     this.appSecret = appSecret;
     this.opts = opts;
   }
 
   async connect(): Promise<void> {
-    this.client = new lark.Client({ appId: this.appId, appSecret: this.appSecret });
+    this.client = new lark.Client({
+      appId: this.appId,
+      appSecret: this.appSecret,
+    });
 
     // Fetch bot's own open_id so we can detect our own messages
     try {
@@ -106,11 +105,20 @@ export class FeishuChannel implements Channel {
     const groups = this.opts.registeredGroups();
     const group = groups[chatJid];
     if (!group) {
-      logger.info({ chatJid, sender: sender?.sender_id?.open_id }, 'Message from unregistered Feishu chat - please register this chat first');
+      logger.info(
+        { chatJid, sender: sender?.sender_id?.open_id },
+        'Message from unregistered Feishu chat - please register this chat first',
+      );
       // Still store the chat metadata so it can be discovered
       const timestamp = new Date(Number(msg.create_time)).toISOString();
       const isGroup = msg.chat_type === 'group';
-      this.opts.onChatMetadata(chatJid, timestamp, undefined, 'feishu', isGroup);
+      this.opts.onChatMetadata(
+        chatJid,
+        timestamp,
+        undefined,
+        'feishu',
+        isGroup,
+      );
       return;
     }
 
@@ -350,13 +358,11 @@ export class FeishuChannel implements Channel {
 }
 
 registerChannel('feishu', (opts: ChannelOpts) => {
-  const envVars = readEnvFile([
-    'FEISHU_APP_ID',
-    'FEISHU_APP_SECRET',
-  ]);
+  const envVars = readEnvFile(['FEISHU_APP_ID', 'FEISHU_APP_SECRET']);
 
   const appId = process.env.FEISHU_APP_ID || envVars.FEISHU_APP_ID || '';
-  const appSecret = process.env.FEISHU_APP_SECRET || envVars.FEISHU_APP_SECRET || '';
+  const appSecret =
+    process.env.FEISHU_APP_SECRET || envVars.FEISHU_APP_SECRET || '';
 
   if (!appId || !appSecret) {
     return null;
